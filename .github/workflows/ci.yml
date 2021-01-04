@@ -13,6 +13,10 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         toolchain: [nightly, stable]
+        flags: ['', --all-features]
+        exclude:
+        - toolchain: nightly
+          flags: --all-features
 
     steps:
     - uses: actions/checkout@v2
@@ -20,6 +24,6 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
     - run: cargo fmt -- --check
-    - run: cargo clippy --all-features
-    - run: cargo build --all-features
-    - run: cargo test --all-features
+    - run: cargo clippy ${{ matrix.flags }}
+    - run: cargo build ${{ matrix.flags }}
+    - run: cargo test ${{ matrix.flags }}
